@@ -281,16 +281,16 @@ class XLSXWriter
 			$number_format = $sheet->columns[$c]['number_format'];
 			$number_format_type = $sheet->columns[$c]['number_format_type'];
 
-			if (key_exists($k, $row_options)) {
-				if (key_exists('number_format', $row_options[$k])) {
-					$number_format = $row_options[$k]['number_format'];
+			if (array_key_exists('columnFormat', $row_options) && key_exists($k, $row_options['columnFormat'])) {
+				if (key_exists('number_format', $row_options['columnFormat'][$k])) {
+					$number_format = $row_options['columnFormat'][$k]['number_format'];
 				}
-				if (key_exists('number_format_type', $row_options[$k])) {
-					$number_format_type = $row_options[$k]['number_format_type'];
+				if (key_exists('number_format_type', $row_options['columnFormat'][$k])) {
+					$number_format_type = $row_options['columnFormat'][$k]['number_format_type'];
 				}
 			}
 
-			$cell_style_idx = empty($style) ? $sheet->columns[$c]['default_cell_style'] : $this->addCellStyle( $number_format, json_encode(isset($style[0]) ? $style[$c] : $style) );
+			$cell_style_idx = empty($style) ? $sheet->columns[$c]['default_cell_style'] : $this->addCellStyle($number_format, json_encode(isset($style[0]) ? $style[$c] : $style));
 			$this->writeCell($sheet->file_writer, $sheet->row_count, $c, $v, $number_format_type, $cell_style_idx);
 			$c++;
 		}
